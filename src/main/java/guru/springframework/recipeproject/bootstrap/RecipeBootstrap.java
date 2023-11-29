@@ -4,6 +4,8 @@ import guru.springframework.recipeproject.domain.*;
 import guru.springframework.recipeproject.repositories.CategoryRepository;
 import guru.springframework.recipeproject.repositories.RecipeRepository;
 import guru.springframework.recipeproject.repositories.UnitOfMeasureRepository;
+import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.*;
 
+@Slf4j
 @Component
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
@@ -61,7 +64,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
             throw new RuntimeException("Expected Category Not Found");
         }
         Category mexicanCategory = mexicanCategoryOptional.get();
-
+        log.debug("loading Guacamole recipe...");
         Recipe guacamole = new Recipe();
         guacamole.getCategories().add(mexicanCategory);
         guacamole.setDescription("Perfect Guacamole");
@@ -156,11 +159,14 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         guacamole.addIngredient(tortilla);
 
         recipes.add(guacamole);
+        log.debug("Guacamole recipe loaded");
         return recipes;
     }
 
     @Override
+    @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
+        log.debug("Loading Bootstrap Data");
         recipeRepository.saveAll(getRecipes());
     }
 }

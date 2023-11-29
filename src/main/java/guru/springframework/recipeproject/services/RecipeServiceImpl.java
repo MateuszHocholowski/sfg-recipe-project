@@ -4,11 +4,13 @@ import guru.springframework.recipeproject.bootstrap.RecipeBootstrap;
 //import guru.springframework.recipeproject.bootstrap.RecipeBootstrap2;
 import guru.springframework.recipeproject.domain.Recipe;
 import guru.springframework.recipeproject.repositories.RecipeRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 public class RecipeServiceImpl implements RecipeService{
 
@@ -19,6 +21,8 @@ public class RecipeServiceImpl implements RecipeService{
     }
 
     public List<Recipe> getRecipes() {
+        log.debug("I'm in the service");
+
         return new ArrayList<>(recipeRepository.findAll());
     }
 }
