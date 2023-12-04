@@ -22,13 +22,16 @@ public class IngredientToIngredientCommand implements Converter<Ingredient, Ingr
     public IngredientCommand convert(Ingredient source) {
         if (source == null) {
             return null;
-        } else {
-            IngredientCommand ingredientCommand = new IngredientCommand();
-            ingredientCommand.setUnitOfMeasure(uomConverter.convert(source.getUnitOfMeasure()));
-            ingredientCommand.setDescription(source.getDescription());
-            ingredientCommand.setAmount(source.getAmount());
-            ingredientCommand.setId(source.getId());
-            return ingredientCommand;
         }
-    }
+        IngredientCommand ingredientCommand = new IngredientCommand();
+        ingredientCommand.setUnitOfMeasure(uomConverter.convert(source.getUnitOfMeasure()));
+        if (source.getRecipe() != null) {
+            ingredientCommand.setRecipeId(source.getRecipe().getId());
+        }
+        ingredientCommand.setDescription(source.getDescription());
+        ingredientCommand.setAmount(source.getAmount());
+        ingredientCommand.setId(source.getId());
+        return ingredientCommand;
+        }
+
 }

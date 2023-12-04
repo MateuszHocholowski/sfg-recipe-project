@@ -1,7 +1,8 @@
 package guru.springframework.controllers;
 
+import guru.springframework.commands.IngredientCommand;
 import guru.springframework.commands.RecipeCommand;
-import guru.springframework.repositories.RecipeRepository;
+import guru.springframework.services.IngredientService;
 import guru.springframework.services.RecipeService;
 import org.junit.Before;
 import org.junit.Test;
@@ -9,13 +10,11 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
@@ -26,6 +25,8 @@ public class IngredientControllerTest {
     private IngredientController controller;
     @Mock
     private RecipeService recipeService;
+    @Mock
+    private IngredientService ingredientService;
     private MockMvc mockMvc;
     @Before
     public void setUp() throws Exception {
@@ -43,5 +44,15 @@ public class IngredientControllerTest {
                 .andExpect(MockMvcResultMatchers.model().attributeExists("recipe"));
 
         verify(recipeService,times(1)).findCommandById(anyLong());
+    }
+    @Test
+    public void testShowIngredient() throws Exception {
+        IngredientCommand ingredientCommand = new IngredientCommand();
+        when(ingredientService.findByRecipeIdAndIngredientId(anyLong(),anyLong())).thenReturn(ingredientCommand);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/recipe/1/ingredient/2/show"))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.view().name("recipe/ingredients/show"))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("ingredient"));
     }
 }
