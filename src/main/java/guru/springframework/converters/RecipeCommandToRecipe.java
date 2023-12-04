@@ -41,6 +41,9 @@ public class RecipeCommandToRecipe implements Converter<RecipeCommand, Recipe> {
                     .map(ingredientConverter::convert)
                     .collect(Collectors.toSet());
             recipe.setIngredients(ingredients);
+            if (source.getNotes() != null) {
+                source.getNotes().setId(source.getId());
+            }
             recipe.setNotes(notesConverter.convert(source.getNotes()));
             recipe.setPrepTime(source.getPrepTime());
             recipe.setDescription(source.getDescription());

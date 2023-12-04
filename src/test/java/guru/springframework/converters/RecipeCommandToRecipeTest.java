@@ -55,7 +55,7 @@ public class RecipeCommandToRecipeTest {
         ingredient.setId(ING_ID);
         ingredient.setAmount(ING_AMOUNT);
         ingredient.setDescription(ING_DESC);
-        ingredient.setUnitOfMeasureCommand(uom);
+        ingredient.setUnitOfMeasure(uom);
 
         ingredients = new HashSet<>();
         ingredients.add(ingredient);

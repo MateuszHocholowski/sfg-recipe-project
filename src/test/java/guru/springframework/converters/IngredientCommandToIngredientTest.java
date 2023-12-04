@@ -40,7 +40,7 @@ public class IngredientCommandToIngredientTest {
         ingredientCommand.setId(1L);
         ingredientCommand.setDescription("test");
         ingredientCommand.setAmount(new BigDecimal("1"));
-        ingredientCommand.setUnitOfMeasureCommand(uomCommand);
+        ingredientCommand.setUnitOfMeasure(uomCommand);
         //when
         Ingredient ingredient = converter.convert(ingredientCommand);
         //then
@@ -49,8 +49,8 @@ public class IngredientCommandToIngredientTest {
         assertEquals(ingredient.getDescription(),ingredientCommand.getDescription());
         assertEquals(ingredient.getAmount(),ingredientCommand.getAmount());
         assertEquals(ingredient.getUnitOfMeasure().getDescription(),
-                ingredientCommand.getUnitOfMeasureCommand().getDescription());
+                ingredientCommand.getUnitOfMeasure().getDescription());
         assertEquals(ingredient.getUnitOfMeasure().getId(),
-                ingredientCommand.getUnitOfMeasureCommand().getId());
+                ingredientCommand.getUnitOfMeasure().getId());
     }
 }
