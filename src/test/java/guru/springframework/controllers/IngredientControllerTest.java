@@ -107,4 +107,18 @@ public class IngredientControllerTest {
                 .andExpect(MockMvcResultMatchers.model().attributeExists("ingredient"))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("uomList"));
     }
+
+    @Test
+    public void testDeleteRecipe() throws Exception {
+        RecipeCommand recipeCommand = new RecipeCommand();
+        recipeCommand.setId(4L);
+        IngredientCommand ingredientCommand = new IngredientCommand();
+        ingredientCommand.setId(6L);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/recipe/4/ingredient/6/delete"))
+                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+                .andExpect(MockMvcResultMatchers.view().name("redirect:/recipe/4/ingredients"));
+
+        verify(ingredientService,times(1)).deleteIngredientById(anyLong(),anyLong());
+    }
 }

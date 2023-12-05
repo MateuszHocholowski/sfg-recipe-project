@@ -1,6 +1,7 @@
 package guru.springframework.services;
 
 import guru.springframework.commands.IngredientCommand;
+import guru.springframework.commands.RecipeCommand;
 import guru.springframework.commands.UnitOfMeasureCommand;
 import guru.springframework.converters.IngredientToIngredientCommand;
 import guru.springframework.domain.Ingredient;
@@ -88,5 +89,23 @@ public class IngredientServiceImplTest {
         assertEquals(3L,(long) savedCommand.getId());
         verify(recipeRepository,times(1)).findById(anyLong());
         verify(recipeRepository,times(1)).save(any());
+    }
+
+    @Test
+    public void testDeleteIngredientById() {
+        Recipe recipe = new Recipe();
+        recipe.setId(5L);
+        Ingredient ingredient = new Ingredient();
+        ingredient.setId(9L);
+        ingredient.setRecipe(recipe);
+        recipe.addIngredient(ingredient);
+
+        when(recipeRepository.findById(anyLong())).thenReturn(Optional.of(recipe));
+
+        ingredientService.deleteIngredientById(5L,9L);
+
+        verify(recipeRepository,times(1)).findById(anyLong());
+        verify(recipeRepository,times(1)).save(any());
+        assertEquals(0,recipe.getIngredients().size());
     }
 }
