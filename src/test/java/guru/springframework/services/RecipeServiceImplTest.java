@@ -1,6 +1,7 @@
 package guru.springframework.services;
 
 import guru.springframework.domain.Recipe;
+import guru.springframework.exceptions.NotFoundException;
 import guru.springframework.repositories.RecipeRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -55,6 +56,15 @@ public class RecipeServiceImplTest {
         assertEquals(1L,recipeReturned.getId());
         verify(recipeRepository,times(1)).findById(anyLong());
         verify(recipeRepository,never()).findAll();
+    }
+    @Test(expected = NotFoundException.class)
+    public void getRecipeByIdTestNotFound() {
+        Optional<Recipe> recipeOptional = Optional.empty();
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+        Recipe recipe = recipeService.findById(1L);
+
     }
     @Test
     public void testDeleteRecipeById() throws Exception {
