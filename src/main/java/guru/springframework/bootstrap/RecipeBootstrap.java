@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +17,7 @@ import java.util.*;
 
 @Slf4j
 @Component
+@Profile("default")
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
     private final CategoryRepository categoryRepository;
@@ -30,6 +32,13 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         this.unitOfMeasureRepository = unitOfMeasureRepository;
     }
 
+
+    @Override
+    @Transactional
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+        log.debug("Loading Bootstrap Data");
+        recipeRepository.saveAll(getRecipes());
+    }
     private List<Recipe> getRecipes() {
         List<Recipe> recipes = new ArrayList<>();
 
@@ -179,10 +188,4 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         return recipes;
     }
 
-    @Override
-    @Transactional
-    public void onApplicationEvent(ContextRefreshedEvent event) {
-        log.debug("Loading Bootstrap Data");
-        recipeRepository.saveAll(getRecipes());
-    }
 }

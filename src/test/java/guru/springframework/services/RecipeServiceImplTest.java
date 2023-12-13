@@ -66,6 +66,14 @@ public class RecipeServiceImplTest {
         Recipe recipe = recipeService.findById(1L);
 
     }
+
+//    @Test(expected = BadRequestException.class)
+//    public void getRecipeByIdWrongInput() {
+//
+//        when(recipeRepository.findById(anyLong())
+//
+//    }
+
     @Test
     public void testDeleteRecipeById() throws Exception {
         Long idToDelete = 2L;
